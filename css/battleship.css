@@ -1,0 +1,47 @@
+body {
+	background-color: black;
+}
+div#board {
+	position: relative;
+	width: 700px;
+	height: 591px;
+	margin: auto;
+	background: url(../image/board.jpg) no-repeat;
+}
+div#messageArea {
+	position:absolute;
+	left:0;
+	top:0;
+	color: rgb(83, 175, 19);
+	font-weight: bold;
+	font-family: 'Press Start 2P';
+}
+table {
+	position: absolute;
+	border-spacing: 0;
+	left:117px;
+	top: 67px;
+}
+td {
+	width: 63px;
+	height: 64px;
+}
+form {
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	padding: 5px;
+	background-color: rgb(83, 175, 19);
+}
+form input {
+	background-color: rgb(152, 207, 113);
+	border-color: rgb(83, 175, 19);
+	font-family: 'Press Start 2P';
+	padding: 5px;
+}
+.hit {
+	background: url(../image/ship.png) no-repeat center center;
+}
+.miss{
+	background: url(../image/miss.png) no-repeat center center;
+}
