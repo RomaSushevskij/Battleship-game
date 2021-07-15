@@ -21,9 +21,9 @@ var model = {
 	shipsLength: 3, //длина кораблей
 	shipsSunk: 0, //количество потопленных кораблей
 	ships: [
-		{ locations: ["06", "16", "26"], hits: ["", "", ""] },
-		{ locations: ["24", "34", "44"], hits: ["", "", ""] },
-		{ locations: ["10", "11", "12"], hits: ["", "", ""] }
+		{ locations: ["0", "0", "0"], hits: ["", "", ""] },
+		{ locations: ["0", "0", "0"], hits: ["", "", ""] },
+		{ locations: ["0", "0", "0"], hits: ["", "", ""] }
 	],
 	//Метод создания массива со случайными позициями корабля
 	generationShip: function() {
@@ -45,17 +45,39 @@ var model = {
 			if (direction === 1) {
 				newShipLocations.push(row + "" + (col + i));
 			} else {
-				newShipLocations.push((row + 1) + "" + col)
+				newShipLocations.push((row + i) + "" + col);
 			}
 		}
 		return newShipLocations;
 	},
-	//метод проверки результата выстрела
+	//Метод проверки перекрытия кораблей друг другом
+	collision: function(locations) {
+		for (var i = 0; i < this.numShips; i += 1) {
+			var ship = model.ships[i];
+			for (var j = 0; j < locations.length; j += 1) {
+				if (ship.locations.indexOf(locations[j]) >= 0) {
+					return true;
+				}
+			}
+		}
+		return false;
+	},
+	//Метод создания кораблей со случайными позициями (генерируются методом generationShip) с исключением возможности перекрытия кораблей друг другом(обеспечивается методом collision)
+	generationShipLocations: function() {
+		var locations;
+		for (var i = 0; i < this.numShips; i += 1) {
+			do {
+				locations = this.generationShip()
+			} while (this.collision(locations))
+				this.ships[i].locations = locations;
+		}
+	},
+	//Метод проверки результата выстрела
 	fire: function(guess) {
 		for (var i = 0; i < this.numShips; i += 1) {
 			var ship = this.ships[i];
 			var index = ship.locations.indexOf(guess);
-			if(index >= 0) {
+			if (index >= 0) {
 				ship.hits[index] = "hit";
 				view.displayHit(guess);
 				view.displayMessage("Попадание!");
@@ -126,6 +148,8 @@ function init() {
 	fireButton.onclick = handleFireButton;
 	var guessInput = document.getElementById("guessInput");
 	guessInput.onkeypress = hundleKeyPress;
+	
+	model.generationShipLocations();
 };
 
 //Обработчик события при нажантии по кнопке "Огонь!"
